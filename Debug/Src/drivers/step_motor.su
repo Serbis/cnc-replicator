@@ -1,0 +1,6 @@
+step_motor.c:10:19:FAL_StepMotor_Init	16	static
+step_motor.c:37:19:FAL_StepMotor_TurnPower	16	static
+step_motor.c:75:19:FAL_StepMotor_AlarmStop	32	static,ignoring_inline_asm
+step_motor.c:90:19:FAL_StepMotor_OutFromAlarmStop	16	static
+step_motor.c:112:19:FAL_StepMotor_SerDirection	16	static
+step_motor.c:151:19:FAL_StepMotor_Run	40	static

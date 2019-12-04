@@ -25,6 +25,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include "step_motor.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -43,6 +45,8 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+SPI_HandleTypeDef hspi1;
+
 osThreadId_t defaultTaskHandle;
 /* USER CODE BEGIN PV */
 
@@ -51,6 +55,7 @@ osThreadId_t defaultTaskHandle;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_SPI1_Init(void);
 void StartDefaultTask(void *argument);
 
 /* USER CODE BEGIN PFP */
@@ -80,6 +85,8 @@ int main(void)
 
   /* USER CODE BEGIN Init */
 
+  DWT_Init();
+
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -91,6 +98,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -118,7 +126,7 @@ int main(void)
   const osThreadAttr_t defaultTask_attributes = {
     .name = "defaultTask",
     .priority = (osPriority_t) osPriorityNormal,
-    .stack_size = 128
+    .stack_size = 512
   };
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
@@ -185,6 +193,44 @@ void SystemClock_Config(void)
 }
 
 /**
+  * @brief SPI1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_SPI1_Init(void)
+{
+
+  /* USER CODE BEGIN SPI1_Init 0 */
+
+  /* USER CODE END SPI1_Init 0 */
+
+  /* USER CODE BEGIN SPI1_Init 1 */
+
+  /* USER CODE END SPI1_Init 1 */
+  /* SPI1 parameter configuration*/
+  hspi1.Instance = SPI1;
+  hspi1.Init.Mode = SPI_MODE_MASTER;
+  hspi1.Init.Direction = SPI_DIRECTION_2LINES;
+  hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
+  hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
+  hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
+  hspi1.Init.NSS = SPI_NSS_SOFT;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
+  hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
+  hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+  hspi1.Init.CRCPolynomial = 10;
+  if (HAL_SPI_Init(&hspi1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN SPI1_Init 2 */
+
+  /* USER CODE END SPI1_Init 2 */
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -200,7 +246,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOE_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
@@ -208,8 +254,8 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOE, GPIO_PIN_0|GPIO_PIN_1, GPIO_PIN_SET);
 
-  /*Configure GPIO pin : PA12 */
-  GPIO_InitStruct.Pin = GPIO_PIN_12;
+  /*Configure GPIO pins : PA10 PA11 PA12 */
+  GPIO_InitStruct.Pin = GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -249,10 +295,35 @@ void StartDefaultTask(void *argument)
     
 
   /* USER CODE BEGIN 5 */
+
+	StepMotor_InitTypeDef stepMotorXInit = {
+			.PortPower = GPIOA,
+			.PinPower = GPIO_PIN_12,
+			.PortDirection = GPIOA,
+			.PinDirection = GPIO_PIN_11,
+			.PortStep = GPIOA,
+			.PinStep = GPIO_PIN_10,
+			.RisingDelay = 500,
+			.FallingDelay = 500,
+			.DirectionForfardFront = GPIO_PIN_SET,
+			.PowerOffFront = GPIO_PIN_SET
+	};
+
+	StepMotor_HandleTypeDef stepMotorX;
+
+	FAL_StepMotor_Init(&stepMotorX, stepMotorXInit);
+	osDelay(100);
+	FAL_StepMotor_TurnPower(&stepMotorX, STEP_MOTOR_POWER_ON);
+	osDelay(100);
+	FAL_StepMotor_SerDirection(&stepMotorX, STEP_MOTOR_DIRECTION_BACKWARD);
+	osDelay(100);
+	FAL_StepMotor_Run(&stepMotorX, 10000, NULL);
+
+
   /* Infinite loop */
   for(;;)
   {
-	  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_12);
+	  //HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_12);
 	  osDelay(2000);
   }
   /* USER CODE END 5 */ 

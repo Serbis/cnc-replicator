@@ -1,4 +1,4 @@
-Src/stm32f4xx_it.o: ../Src/stm32f4xx_it.c ../Inc/main.h \
+Src/fal/dwt_delay.o: ../Src/fal/dwt_delay.c \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  ../Inc/stm32f4xx_hal_conf.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
@@ -25,7 +25,8 @@ Src/stm32f4xx_it.o: ../Src/stm32f4xx_it.c ../Inc/main.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h \
- ../Inc/stm32f4xx_it.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
  ../Inc/FreeRTOSConfig.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \
@@ -33,10 +34,7 @@ Src/stm32f4xx_it.o: ../Src/stm32f4xx_it.c ../Inc/main.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
-
-../Inc/main.h:
+ /home/serbis/code/main/cnc/cnc-replicator/Inc/fal/dwt_delay.h
 
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 
@@ -90,7 +88,9 @@ Src/stm32f4xx_it.o: ../Src/stm32f4xx_it.c ../Inc/main.h \
 
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h:
 
-../Inc/stm32f4xx_it.h:
+../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h:
+
+../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
 
 ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 
@@ -106,6 +106,4 @@ Src/stm32f4xx_it.o: ../Src/stm32f4xx_it.c ../Inc/main.h \
 
 ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h:
 
-../Middlewares/Third_Party/FreeRTOS/Source/include/task.h:
-
-../Middlewares/Third_Party/FreeRTOS/Source/include/list.h:
+/home/serbis/code/main/cnc/cnc-replicator/Inc/fal/dwt_delay.h:

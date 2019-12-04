@@ -1,0 +1,3 @@
+dwt_delay.c:30:6:DWT_Init	4	static
+dwt_delay.c:46:26:delta	16	static
+dwt_delay.c:58:6:DWT_Delay	24	static
